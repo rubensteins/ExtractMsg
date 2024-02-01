@@ -112,8 +112,8 @@ void ProcessArguments()
 void PrintHelp()
 {
     Console.WriteLine("ExtractMsg will open up a .msg message.");
-    Console.WriteLine("(c) 2024 Ruben Steins - MIT License");
     Console.WriteLine("Body text will be written as text-file and (nested) attachments exported.");
+    Console.WriteLine("(c) 2024 Ruben Steins - MIT License");
     Console.WriteLine("");
     Console.WriteLine("Usage:");
     Console.WriteLine("ExtractMsg filename [-f] [-d] [-h]");
