@@ -6,14 +6,14 @@ Made this to extract .msg-files on my Mac since Outlook for Macs doesn't seem to
 If you build it with
 
 ```
-dotnet publish -p:PublishSingleFile=True --self-contained false --output "\<SomePath>\ExtractMsg" -r osx-arm64
+dotnet publish -p:PublishSingleFile=True --self-contained false --output "/<SomePath>/ExtractMsg" -r osx-arm64
 ```
 
 , you'll get a single executable. Place that in some path that's on the PATH and you're good to go.
 
 ---
 
-This first version has no error handling whatsoever and will simply 
+This first version has very little error handling and will  
 write out the body-text of the .msg (and any nested .msg-s) to a text-file and export all attachments.
 
 ```

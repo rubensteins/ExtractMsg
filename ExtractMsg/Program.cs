@@ -1,12 +1,12 @@
 ﻿using MsgReader.Outlook;
-using RtfPipe.Tokens;
 
 bool showDiag = false; // show diagnostic messages
 bool useFolder = false; // no seperate folder
+string fileName = "";
 
 if (args.Length == 0)
 {
-    PrintHelp();
+    PrintHelp("No file provided.");
     Environment.Exit(-1);
 }
 else
@@ -14,12 +14,17 @@ else
     ProcessArguments();
 }
 
+if (!File.Exists(fileName))
+{
+    PrintHelp("Invalid file name.");
+    Environment.Exit(-1);
+}
+
 List<object> messagesToProcess = new List<object>();
-string fileName = args[0];
 string basePath = "";
 
 // Open the Message
-using (var msg = new MsgReader.Outlook.Storage.Message(fileName))
+using (var msg = new Storage.Message(fileName))
 {
     messagesToProcess.Add(msg);
     if (useFolder)
@@ -82,6 +87,7 @@ void ProcessArguments()
                 case ("-d"):
                 {
                     showDiag = true;
+                    Console.WriteLine("Diagnostics on.");
                     break;
                 }
                 case "-f":
@@ -92,11 +98,12 @@ void ProcessArguments()
                 case "-h":
                 {
                     PrintHelp();
+                    Environment.Exit(0);
                     break;
                 }
                 default:
                 {
-                    PrintHelp();
+                    PrintHelp($"Unknown parameter {args[c]}");
                     Environment.Exit(-1);
                     break;
                 }
@@ -109,8 +116,13 @@ void ProcessArguments()
     }
 }
 
-void PrintHelp()
+void PrintHelp(string error = "")
 {
+    if (!string.IsNullOrEmpty(error))
+    {
+        Console.WriteLine($"Error: {error}");
+        Console.WriteLine();
+    }
     Console.WriteLine("ExtractMsg will open up a .msg message.");
     Console.WriteLine("Body text will be written as text-file and (nested) attachments exported.");
     Console.WriteLine("(c) 2024 Ruben Steins - MIT License");
