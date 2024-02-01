@@ -1,4 +1,5 @@
 ﻿using MsgReader.Outlook;
+using RtfPipe.Tokens;
 
 bool showDiag = false; // show diagnostic messages
 bool useFolder = false; // no seperate folder
@@ -15,19 +16,30 @@ else
 
 List<object> messagesToProcess = new List<object>();
 string fileName = args[0];
+string basePath = "";
 
 // Open the Message
 using (var msg = new MsgReader.Outlook.Storage.Message(fileName))
 {
     messagesToProcess.Add(msg);
+    if (useFolder)
+    {
+        basePath = msg.Subject + Path.DirectorySeparatorChar;
+        var dir = Directory.CreateDirectory(basePath);
+        if (showDiag)
+        {
+            Console.WriteLine($"Created folder {dir.Name}");
+        }
+    }
+    
     while (messagesToProcess.Count > 0)
     {
         // if it's a message, write its text.
         if (messagesToProcess[0] is Storage.Message)
         {
             Storage.Message message = (messagesToProcess[0] as Storage.Message)!;
-            File.WriteAllText(message.Subject + ".txt", message.BodyText);
-            //Console.WriteLine(message.BodyText.Replace("\\n", Environment.NewLine));
+
+            File.WriteAllText($"{basePath}{message.Subject}.txt", message.BodyText);
             messagesToProcess.RemoveAt(0);
             
             // msg might contain attachments, process them as well
@@ -42,15 +54,22 @@ using (var msg = new MsgReader.Outlook.Storage.Message(fileName))
             Storage.Attachment a = (messagesToProcess[0] as Storage.Attachment)!;
             if (a != null)
             {
-                File.WriteAllBytes(a.FileName, a.Data);
-                if(showDiag) Console.WriteLine("Wrote: " + a.FileName);
+                var fileToWrite = $"{basePath}{a.FileName}";
+                if (File.Exists($"{basePath}{a.FileName}"))
+                {
+                    // Sometimes nested files have the same name :(
+                    fileToWrite = $"{basePath}copy of {a.FileName}";
+                }
+                
+                File.WriteAllBytes(fileToWrite, a.Data);
+                if(showDiag) Console.WriteLine($"Wrote {a.Data.Length} bytes to {a.FileName}");
             }
             messagesToProcess.RemoveAt(0);
         }
     }
 }
 
-Console.WriteLine("Done.");
+if(showDiag) Console.WriteLine("Done.");
 
 void ProcessArguments()
 {
