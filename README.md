@@ -2,9 +2,9 @@ Made this to extract .msg-files on my Mac since Outlook for Macs doesn't seem to
 
 If you build it with
 
-'''
+```
 dotnet publish -p:PublishSingleFile=True --self-contained false --output "\<SomePath>\ExtractMsg" -r osx-arm64
-'''
+```
 
 You'll get a single executable. Place that in some path that's on the PATH and you're good to go.
 
