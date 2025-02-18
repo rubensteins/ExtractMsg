@@ -32,3 +32,8 @@ filename:          The name of the .msg file to extract
 ---
 Packages used:
 [MSGReader](https://github.com/Sicos1977/MSGReader)
+
+### Version history ###
+
+1.0     Initial release.
+1.1     Added support for legacy encodings, updated MsgReader to 5.7.0, added Version parameter.
