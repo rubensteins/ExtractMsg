@@ -22,12 +22,13 @@ ExtractMsg will open up a .msg message.
 Body text will be written as text-file and (nested) attachments exported.
 
 Usage:
-ExtractMsg filename [-f] [-d] [-h]
+ExtractMsg filename [-d] [-f] [-h] [-v]
 
 filename:          The name of the .msg file to extract
 -f     Folder.     Create a new folder called 'filename' and extract into that.
 -d     Diagnostic. Show some diagnostic messages.
 -h     Help.       Shows this text.
+-v     Version.    Print version info for this application.
 ```
 ---
 Packages used:
@@ -35,5 +36,5 @@ Packages used:
 
 ### Version history ###
 
-1.0     Initial release.
-1.1     Added support for legacy encodings, updated MsgReader to 5.7.0, added Version parameter.
+* 1.1     [18 Feb 2025] Added support for legacy encodings, updated MsgReader to 5.7.0, added Version parameter.
+* 0.1     [01 Feb 2024] [Initial release.
